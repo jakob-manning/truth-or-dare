@@ -2,6 +2,9 @@ import React from 'react'
 import axios from "axios";
 import Buttons from "../TDButtons";
 
+//TODO: Change title to "ask a friend"
+//TODO: two modes: advice, confession
+
 class SubmitIdea extends React.Component {
     constructor(props) {
         super(props);
@@ -27,7 +30,6 @@ class SubmitIdea extends React.Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-//TODO: remove white space and empty entries
         let question = this.state.currentIdea.trim()
         if (question === ''){
             this.setState({

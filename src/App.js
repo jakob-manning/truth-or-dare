@@ -28,13 +28,11 @@ class App extends React.Component{
         if (this.state.mode === "start"){
             main = []
             title = <div className={"title"}>
-                <h2>truth or dare</h2>
+                ?<h1>truth or dare</h1> ?
             </div>
         }
 
-
         return (
-
             <div className={"wrapper"}>
                 {title}
                 <ModeSelector

@@ -4,6 +4,14 @@
     display: block;
     margin: auto;
     max-width: 800px;
+
+    -ms-word-break: break-all;
+    word-break: break-all;
+    /* Non standard for WebKit */
+    word-break: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
 }
 
 .modeSelector{
@@ -30,17 +38,19 @@
     font-weight: bold;
 }
 
-.title {
-    background-color: slategrey;
-    padding: 50px;
-    color: whitesmoke;
-}
-
 .play {
     margin-top: 40px;
 }
 
-/*TODO: prevent word overflow*/
+.comment {
+    border: none;
+    border-bottom: 1px solid lightgray;
+    /*box-shadow: 2px 3px 2px 1px lightgray;*/
+    margin: 10px;
+    border-radius: 2px;
+    text-align: left;
+}
+
 
 .commentInput {
     font-family: "Calibri Light";
@@ -62,6 +72,12 @@ h2 {
     color: dimgray;
 }
 
+.title {
+    background-color: slategrey;
+    padding: 50px;
+    color: whitesmoke;
+}
+
 .tdButtons {
     width: 25%;
     border: none;
@@ -76,6 +92,29 @@ h2 {
     font-weight: lighter;
 }
 
+.wideButton {
+    width: 40%;
+    max-width: 200px;
+    margin: 2px;
+}
+
 .submitButton {
     border-radius: 5px;
+}
+
+.upvoteButtons {
+    border: none;
+    text-decoration: none;
+    min-width: 80px;
+    margin: 4px 2px;
+    cursor: pointer;
+
+    background-color: whitesmoke;
+    color: darkslategrey;
+    margin-right: 5px;
+    padding: 5px 15px;
+}
+
+.red{
+    color: slategray;
 }

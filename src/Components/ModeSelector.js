@@ -27,7 +27,7 @@ const ModeSelector = (props) => {
                 style={writeStyle}
                 name={"write"}
                 onClick={props.handler}
-            >write</button>
+            >ask</button>
             <button
                 className={"largeButton playStyle"}
                 style={playStyle}
