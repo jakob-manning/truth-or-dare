@@ -1,38 +1,81 @@
-.App {
-  text-align: center;
+.wrapper {
+    text-align: center;
+    background-color: white;
+    display: block;
+    margin: auto;
+    max-width: 800px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.modeSelector{
+
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.largeButton {
+    width: 50%;
+    border: none;
+    padding: 5px 10px;
+    text-decoration: none;
+    font-size: large;
+    cursor: pointer;
+    color: whitesmoke;
+    background-color: lightslategray;
+    font-weight: lighter;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.selectedButton {
+    padding: 5px 10px 10px 10px;
+    border-bottom: 2px solid black;
+    background-color: darkslategrey;
+    color: ghostwhite;
+    font-weight: bold;
 }
 
-.App-link {
-  color: #61dafb;
+.title {
+    background-color: slategrey;
+    padding: 50px;
+    color: whitesmoke;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.play {
+    margin-top: 40px;
+}
+
+/*TODO: prevent word overflow*/
+
+.commentInput {
+    font-family: "Calibri Light";
+    width: 90vw;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 750px;
+    margin-bottom: -15px;
+
+    background-color: whitesmoke;
+    border: none;
+    color: darkslategrey;
+    padding: 5px 10px;
+    border-radius: 20px;
+}
+
+h2 {
+    color: dimgray;
+}
+
+.tdButtons {
+    width: 25%;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin: 7%;
+    text-decoration: none;
+    font-size: large;
+    cursor: pointer;
+    color: whitesmoke;
+    background-color: lightslategray;
+    font-weight: lighter;
+}
+
+.submitButton {
+    border-radius: 5px;
 }
