@@ -3,7 +3,7 @@
     background-color: white;
     display: block;
     margin: auto;
-    max-width: 800px;
+    max-width: 500px;
 
     -ms-word-break: break-all;
     word-break: break-all;
@@ -54,11 +54,11 @@
 
 .commentInput {
     font-family: "Calibri Light";
-    width: 90vw;
+
+    width: 90%;
     display: block;
     margin-left: auto;
     margin-right: auto;
-    max-width: 750px;
     margin-bottom: -15px;
 
     background-color: whitesmoke;
@@ -79,11 +79,11 @@ h2 {
 }
 
 .tdButtons {
-    width: 25%;
+    width: 38%;
     border: none;
     padding: 5px 10px;
     border-radius: 20px;
-    margin: 7%;
+    margin: 3%;
     text-decoration: none;
     font-size: large;
     cursor: pointer;

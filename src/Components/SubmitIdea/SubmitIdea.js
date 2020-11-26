@@ -2,16 +2,13 @@ import React from 'react'
 import axios from "axios";
 import Buttons from "../TDButtons";
 
-//TODO: Change title to "ask a friend"
-//TODO: two modes: advice, confession
-
 class SubmitIdea extends React.Component {
     constructor(props) {
         super(props);
         this.state = ({
-            type: "truth",
+            type: "advice",
             currentIdea: '',
-            promptText: "answer truthfully",
+            promptText: "advice question...",
             test: ''
 
         })
@@ -63,9 +60,9 @@ class SubmitIdea extends React.Component {
     tdButtonHandler = (event) => {
         const inputName = event.target.name
         let currentPromptText = this.state.promptText
-        let promptText = "i dare you to"
-        if (inputName === "truth"){
-            promptText = "answer truthfully"
+        let promptText = "confession question..."
+        if (inputName === "advice"){
+            promptText = "advice question..."
         }
         this.setState({
             type : inputName,
@@ -76,7 +73,7 @@ class SubmitIdea extends React.Component {
     render() {
         return (
             <div>
-                <h2>write a new...</h2>
+                <h2>ask for...</h2>
                 <Buttons
                     handler = {this.tdButtonHandler}
                     game = {this.state.type}
