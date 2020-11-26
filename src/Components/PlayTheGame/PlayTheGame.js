@@ -13,11 +13,16 @@ class PlayTheGame extends React.Component {
             status: 'start',
             questionKey: '',
             votesRemaining: 5,
-            errorMessage: ''
+            errorMessage: '',
+            response: '',
+            communityResponses: ''
         })
     }
 
     generateRandomChallenge = (type) => {
+        if(!this.state.data){
+            return
+        }
         let randomType = ''
         const values = Object.values(this.state.data)
         const length = values.length
@@ -34,9 +39,9 @@ class PlayTheGame extends React.Component {
 
         let key = Object.keys(this.state.data)[item]
         this.setState({
-            questionKey: key
+            questionKey: key,
+            challenge: randomChoice.question,
         })
-
         return randomChoice;
     }
 
@@ -47,10 +52,9 @@ class PlayTheGame extends React.Component {
         })
 
         //Display a random T/D from data
-        let result = this.generateRandomChallenge(requestType)
+        this.generateRandomChallenge(requestType)
         this.setState({
-            challenge: result.question,
-            status: 'check'
+            status: 'ready'
         })
 
         //Send an axios request to update the list of questions for next round
@@ -63,6 +67,8 @@ class PlayTheGame extends React.Component {
         axios.get("https://truth-or-dare-a2f5b.firebaseio.com/truth.json")
             .then( response => {
                 let data = response.data
+
+                console.log(response.data)
                 this.setState({
                     data
                 })
@@ -83,7 +89,13 @@ class PlayTheGame extends React.Component {
 
     playAgainHandler = () => {
         this.setState({
-            status: 'start'
+            challenge: '',
+            status: 'start',
+            questionKey: '',
+            votesRemaining: 5,
+            errorMessage: '',
+            response: '',
+            communityResponses: ''
         })
     }
 
@@ -110,12 +122,14 @@ class PlayTheGame extends React.Component {
                 newVoteSum = 1
             }
         }
-        const data = {...this.state.data}
-        //technically copying a multilevel object like this incorrectly mutates state. Redux or another state handler would help eliminate this problem
-        data[questionKey].responses[responseKey][vote] = newVoteSum
-        this.setState({
-            data,
-            votesRemaining
+
+        this.setState((prevState, props) => {
+            const data = {...prevState.data}
+            data[questionKey].responses[responseKey][vote] = newVoteSum
+            return {
+                data,
+                votesRemaining
+            }
         })
 
         axios.put(`https://truth-or-dare-a2f5b.firebaseio.com/truth/${questionKey}/responses/${responseKey}/${vote}.json`, newVoteSum)
@@ -124,8 +138,64 @@ class PlayTheGame extends React.Component {
             .catch( (error) => console.log(error))
     }
 
+    ///2-way binding for Response component
+    handleChange = (event) => {
+        const inputName = event.target.name
+        const inputValue = event.target.value
+        this.setState({
+            [inputName] : inputValue
+        })
+    }
 
-    //TODO: add sanity check to play
+    //submit response to question
+    handleSubmit = (event) => {
+        event.preventDefault()
+        let message = this.state.response.trim()
+        if(message === ''){
+            return
+        }
+        let dataToPost = {
+            message,
+            timeStamp : new Date().getTime(),
+            upVotes: 0,
+            downVotes: 0
+        }
+        //TODO: write a promise so that the data is posted, received, and then displayed (with a loading screen inbetween)
+        this.axiosPost(dataToPost)
+        this.nextHandler()
+
+    }
+
+    //axios Post request
+    axiosPost = (data) => {
+        axios.post(`https://truth-or-dare-a2f5b.firebaseio.com/truth/${this.state.questionKey}/responses.json`, data)
+            .then( response => {
+            })
+            .catch(error => {
+                console.log(error)
+                this.setState({
+                    errorMessage: 'could not connect, please try again...'
+                })
+            })
+    }
+
+    //skip response writing step
+    nextHandler = () => {
+        const communityResponses = this.state.data[this.state.questionKey].responses
+
+        if(communityResponses){
+            this.setState({
+                communityResponses,
+                response: ''
+            })
+        }
+        else{
+            this.playAgainHandler()
+        }
+    }
+
+
+
     render() {
 
         if(this.state.status === 'start'){
@@ -138,27 +208,6 @@ class PlayTheGame extends React.Component {
                 </div>
             )
         }
-        if(this.state.status === 'check'){
-            return(
-                <div className={"play"}>
-                    <Buttons
-                        game = {this.state.game}
-                        handler = {this.buttonHandler}
-                    >or</Buttons>
-                    <h2>{this.state.game}: are you sure?</h2>
-                    <button
-                        className={"tdButtons"}
-                        name={"ready"}
-                        onClick={this.confirmationHandler}
-                    >Yes</button>
-                    <button
-                        className={"tdButtons"}
-                        name={"start"}
-                        onClick={this.confirmationHandler}
-                    >No</button>
-                </div>
-                )
-        }
         if(this.state.status === 'ready'){
             return(
                 <div className={"play"}>
@@ -170,22 +219,15 @@ class PlayTheGame extends React.Component {
                         data={this.state.data}
                         votesRemaining={this.state.votesRemaining}
                         errorMessage={this.state.errorMessage}
+                        handleChange={this.handleChange}
+                        nextHandler={this.nextHandler}
+                        handleSubmit={this.handleSubmit}
+                        communityResponses={this.state.communityResponses}
+                        refresh={this.generateRandomChallenge.bind(this, this.state.game)}
                     ></Response>
                 </div>
             )
         }
-        if(this.state.status === 'resolved'){
-            return(
-                <div className={"play"}>
-                    <h2>{this.state.challenge}</h2>
-                </div>
-            )
-        }
-
-        return(
-            <div className={"play"}>
-            </div>
-        )
     }
 
 }

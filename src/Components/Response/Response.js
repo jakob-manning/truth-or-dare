@@ -6,85 +6,24 @@ class Response extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            response: '',
-            errorText: '',
-            communityResponses: ''
+            errorText: ''
         }
     }
-
-    handleChange = (event) => {
-        const inputName = event.target.name
-        const inputValue = event.target.value
-        this.setState({
-            [inputName] : inputValue
-        })
-    }
-
-    handleSubmit = (event) => {
-        event.preventDefault()
-
-        let message = this.state.response.trim()
-
-        if(message === ''){
-            return
-        }
-
-        let data = {
-            message,
-            timeStamp : new Date().getTime(),
-            upVotes: 0,
-            downVotes: 0
-        }
-        this.axiosPost(data)
-
-        this.nextHandler()
-
-        //TODO: push to axios (use question key as location on database)
-        //TODO: take all responses with the same tag and display
-    }
-
-    nextHandler = () => {
-        const communityResponses = this.props.data[this.props.questionKey].responses
-        this.setState({
-            response: '',
-            communityResponses
-        })
-
-    }
-
-    //axios Post request
-    axiosPost = (data) => {
-        axios.post(`https://truth-or-dare-a2f5b.firebaseio.com/truth/${this.props.questionKey}/responses.json`, data)
-            .then( response => {
-            })
-            .catch(error => console.log(error))
-    }
-
-    //axios get request
-    // axiosGet = () => {
-    //     axios.get(`https://truth-or-dare-a2f5b.firebaseio.com/truth/${this.props.questionKey}/responses.json`)
-    //         .then(response => {
-    //             console.log(response)
-    //             this.setState({
-    //                 communityResponses: response.data
-    //             })
-    //         })
-    //         .catch(error => {
-    //             console.log(error)
-    //             this.setState({
-    //                 errorText: 'unable to load, please try again'
-    //             })
-    //         })
-    // }
 
     render() {
+        let seeAnswers = []
+        if(this.props.data[this.props.questionKey].responses){
+            seeAnswers = <button
+                className={"submitButton tdButtons"}
+                onClick={this.props.nextHandler}>see answers</button>
+        }
 
-        if(!this.state.communityResponses){
+        if(!this.props.communityResponses){
             return(
                 <div>
-                    {this.state.errorText}
+                    {this.props.errorMessage}
                     <h2>{this.props.responseType}</h2>
-                    <form className={"form"} onSubmit={this.handleSubmit}>
+                    <form className={"form"} onSubmit={this.props.handleSubmit}>
                     <textarea
                         className={"inputField commentInput"}
                         name={"response"}
@@ -92,7 +31,7 @@ class Response extends React.Component {
                         cols={"40"}
                         value={this.props.currentIdea}
                         placeholder={this.props.promptText}
-                        onChange={this.handleChange}
+                        onChange={this.props.handleChange}
                     />
                         <br />
                         <div className={"center"}>
@@ -101,21 +40,21 @@ class Response extends React.Component {
                                 type="submit"
                             >save
                             </button>
-                            <button
-                                className={"submitButton tdButtons"}
-                                onClick={this.nextHandler}
-                            >skip
-                            </button>
+                            {seeAnswers}
                         </div>
                     </form>
+                    <button
+                        className={"submitButton tdButtons"}
+                        onClick={this.props.refresh}
+                    >refresh</button>
                 </div>
             )
         }
-        if(this.state.communityResponses){
+        if(this.props.communityResponses){
             return (
                 <div>
                     <DisplayComments
-                        comments = {this.state.communityResponses}
+                        comments = {this.props.communityResponses}
                         voteHandler = {this.props.voteHandler}
                         data={this.props.data}
                         votesRemaining={this.props.votesRemaining}

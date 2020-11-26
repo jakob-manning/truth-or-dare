@@ -33,7 +33,7 @@ const ModeSelector = (props) => {
                 style={playStyle}
                 name={"play"}
                 onClick={props.handler}
-            >play</button>
+            >answer</button>
         </div>
     )
 }
