@@ -7,32 +7,32 @@ const Buttons = (props) => {
         color: "white",
         fontWeight: "normal"
     }
-    let truthStyle = null
-    let dareStyle = null
+    let firstStyle = null
+    let secondStyle = null
 
-    if(props.game === "truth"){
-        truthStyle = selectedButtonStyle
+    if(props.game === "advice"){
+        firstStyle = selectedButtonStyle
     }
-    else if(props.game === "dare"){
-        dareStyle = selectedButtonStyle
+    else if(props.game === "confession"){
+        secondStyle = selectedButtonStyle
     }
 
 
     return(
         <div >
             <button
-                style={truthStyle}
+                style={firstStyle}
                 className={"tdButtons"}
-                name={"truth"}
+                name={"advice"}
                 onClick={props.handler}
-            >truth</button>
+            >advice</button>
             {props.children}
             <button
-                style={dareStyle}
+                style={secondStyle}
                 className={"tdButtons"}
-                name={"dare"}
+                name={"confession"}
                 onClick={props.handler}
-            >dare</button>
+            >confessions</button>
         </div>
     )
 }

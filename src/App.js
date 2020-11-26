@@ -28,7 +28,7 @@ class App extends React.Component{
         if (this.state.mode === "start"){
             main = []
             title = <div className={"title"}>
-                ?<h1>truth or dare</h1> ?
+                ?<h1>ask a friend</h1> ?
             </div>
         }
 
